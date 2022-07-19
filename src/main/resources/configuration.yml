@@ -1,0 +1,57 @@
+debug: false
+options:
+  support-essentialsx-chat: false
+  #With this enabled, you can add the "{TAG}" placeholder in the essentialsX Chat configuration and it will be replaced with the current tag of the player
+  default-tag:
+    enabled: false
+    #Should we use a "default tag" if the player has none ?
+    tag: default
+    #Which tag should we use if the player has none ? ("default-tag.enabled" has to be true)
+
+storage:
+  #Default mode is YML, Mode Available: SQLlite, MySQL.
+  mode: SQLlite
+  mysql-credentials:
+    host: your-host
+    port: your-port
+    database: your-database
+    username: your-username
+    password: your-password
+
+    #Options
+    useSSL: false
+
+GUI:
+  title: "&7Main menu"
+  total-slots: 54
+  total-pages: 2 #(Minimum 1)
+
+  #Here are the main item in the gui, you can all disabled them by switching "enabled" to false.
+  items:
+    #This item will be placed in every empty slot in the GUI. If you want nothing in it, put "enabled" to false
+    empty-slots:
+      enabled: true
+      display: "&8"
+      material: black_stained_glass_pane
+      lore: [ ]
+    #This item will be placed at the slot of any tags the player don't has the permission to use.
+    change-item:
+      enabled: true
+      display: "&cYou don't have the tag: %tag%"
+      material: obsidian
+      lore:
+        - "&f"
+        - "&cYou don't have access to the tag %tag-id%"
+        - "&f"
+    next-page:
+      enabled: true
+      slot: 53
+      display: "&7Click here to go to the next page"
+      material: head-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDllY2NjNWMxYzc5YWE3ODI2YTE1YTdmNWYxMmZiNDAzMjgxNTdjNTI0MjE2NGJhMmFlZjQ3ZTVkZTlhNWNmYyJ9fX0=
+      lore: [ ]
+    previous-page:
+      enabled: true
+      slot: 45
+      display: "&7Click here to go to the previous page"
+      material: head-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODY0Zjc3OWE4ZTNmZmEyMzExNDNmYTY5Yjk2YjE0ZWUzNWMxNmQ2NjllMTljNzVmZDFhN2RhNGJmMzA2YyJ9fX0=
+      lore: [ ]

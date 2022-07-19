@@ -1,0 +1,6 @@
+tags:
+  default:
+    display: "&e&lMY-TAG"
+    use-hex-color: false
+    need-permission: true
+    permission: my.permission
