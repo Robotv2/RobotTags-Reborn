@@ -1,6 +1,7 @@
 name: RobotTags
 version: '${project.version}'
 main: fr.robotv2.robottags.RobotTags
+api-version: 1.13
 authors: [ Robotv2 ]
 description: A tag plugin with HEX & MySQL support
 depend: [ PlaceholderAPI ]

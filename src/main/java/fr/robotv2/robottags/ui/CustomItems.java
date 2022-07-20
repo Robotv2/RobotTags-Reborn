@@ -46,7 +46,7 @@ public class CustomItems {
         return plugin.getConfiguration().get().getBoolean("GUI.custom-items." + id + ".enabled");
     }
 
-    public static void buildAndSave(String id) {
+    private static void buildAndSave(String id) {
         try {
             String name = plugin.getConfiguration().get().getString("GUI.custom-items." + id + ".name");
             List<String> lore = plugin.getConfiguration().get().getStringList("GUI.custom-items." + id + ".lore");

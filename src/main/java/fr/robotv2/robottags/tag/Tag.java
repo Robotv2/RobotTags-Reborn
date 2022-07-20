@@ -1,17 +1,22 @@
 package fr.robotv2.robottags.tag;
 
 import com.iridium.iridiumcolorapi.IridiumColorAPI;
+import fr.robotv2.robottags.RobotTags;
 import fr.robotv2.robottags.util.ColorUtil;
 import fr.robotv2.robottags.util.ItemAPI;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 public final class Tag {
+
+    private static final NamespacedKey TAG_KEY = new NamespacedKey(RobotTags.get(), "tag");
 
     private final ConfigurationSection section;
     private final String id;
@@ -80,6 +85,7 @@ public final class Tag {
         final ItemMeta meta = Objects.requireNonNull(result.getItemMeta());
         meta.setDisplayName(getDisplay());
         meta.setLore(section.getStringList("lore").stream().map(ColorUtil::color).collect(Collectors.toList()));
+        meta.getPersistentDataContainer().set(TAG_KEY, PersistentDataType.STRING, id);
         result.setItemMeta(meta);
         this.guiItem = result;
 

@@ -45,8 +45,9 @@ public record TagInventoryManager(TagManager tagManager) {
         }
 
         for(String id : CustomItems.getIds()) {
-            if(CustomItems.isEnabled(id))
+            if(CustomItems.isEnabled(id)) {
                 inventory.setItem(CustomItems.getSlot(id), CustomItems.getItemFor(id, player));
+            }
         }
 
         return inventory;

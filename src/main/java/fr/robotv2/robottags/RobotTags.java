@@ -75,6 +75,7 @@ public final class RobotTags extends JavaPlugin {
         new Metrics(this, 11791);
         placeholderapi.register();
 
+        Settings.initialize();
         ItemStock.initialize();
         CustomItems.initialize();
 
@@ -92,6 +93,7 @@ public final class RobotTags extends JavaPlugin {
     public void onReload() {
         getTagConfig().reload();
         getConfiguration().reload();
+        Messages.getMessageConfig().reload();
 
         getTagManager().unregisterAll();
         this.loadTags();
@@ -156,7 +158,7 @@ public final class RobotTags extends JavaPlugin {
         ConfigAPI.init(this);
         getTagConfig().setup();
         getConfiguration().setup();
-        Settings.initialize();
+        Messages.getMessageConfig().setup();
     }
 
     private void loadDataManager() throws SQLException {

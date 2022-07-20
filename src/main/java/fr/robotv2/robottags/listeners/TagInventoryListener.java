@@ -1,5 +1,6 @@
 package fr.robotv2.robottags.listeners;
 
+import fr.robotv2.robottags.Messages;
 import fr.robotv2.robottags.RobotTags;
 import fr.robotv2.robottags.player.TagPlayer;
 import fr.robotv2.robottags.tag.Tag;
@@ -46,15 +47,15 @@ public class TagInventoryListener implements Listener {
             Tag tag = plugin.getTagManager().fromId(tagID);
 
             if(!plugin.getTagManager().hasAccess(player, tag)) {
-                MessageManager.Message.PLAYER_CANT_ACCESS.send(player);
+                Messages.PLAYER_CANT_ACCESS.send(player);
                 return;
             }
 
             TagPlayer.getTagPlayer(player).setTagId(tagID);
             player.closeInventory();
 
-            String message = MessageManager.Message.PLAYER_TAG_CHANGED.getMessage().replace("%tag%", tag.getDisplay());
-            //TODO Main.sendMessage(player, true, message);
+            final String message = Messages.PLAYER_TAG_CHANGED.getColored().replace("%tag%", tag.getDisplay());
+            player.sendMessage(Messages.PREFIX + message);
 
         } else if(ItemAPI.hasKey(current, "next-page", PersistentDataType.INTEGER)) {
             plugin.getTagInventoryManager().openForPlayer(player, page + 1);

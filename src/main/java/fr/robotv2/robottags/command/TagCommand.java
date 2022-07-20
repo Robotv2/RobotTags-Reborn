@@ -1,5 +1,6 @@
 package fr.robotv2.robottags.command;
 
+import fr.robotv2.robottags.Messages;
 import fr.robotv2.robottags.RobotTags;
 import fr.robotv2.robottags.player.TagPlayer;
 import fr.robotv2.robottags.tag.Tag;
@@ -31,7 +32,7 @@ public final class TagCommand {
     @CommandPermission("robottags.reload")
     public void onReload(BukkitCommandActor actor) {
         plugin.onReload();
-        actor.reply(ChatColor.GREEN + "The plugin has been reloaded successfully.");
+        Messages.PLUGIN_RELOADED.send(actor.getSender());
     }
 
     @Subcommand("set")
@@ -58,7 +59,10 @@ public final class TagCommand {
             plugin.getDataManager().saveTagPlayer(tagPlayer);
         }
 
-        actor.reply(ChatColor.GREEN + "The tag of " + target.getName() + " has been changed.");
+        final String message = Messages.ADMIN_SET_TAG.getColored()
+                .replace("%player%", target.getName())
+                .replace("%new-tag%", tag.getId());
+        actor.reply(Messages.PREFIX + message);
     }
 
     @Subcommand("clear")
@@ -86,6 +90,8 @@ public final class TagCommand {
             plugin.getDataManager().saveTagPlayer(tagPlayer);
         }
 
-        actor.reply(ChatColor.GREEN + "The tag of " + target.getName() + " has been cleared.");
+        final String playerName = target == null ? actor.getName() : target.getName() != null ? target.getName() : "UNKNOWN";
+        final String message = Messages.ADMIN_CLEAR_TAG.getColored().replace("%player%", playerName);
+        actor.reply(Messages.PREFIX + message);
     }
 }
