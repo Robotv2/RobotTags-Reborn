@@ -21,7 +21,7 @@ public final class Settings {
     public static boolean WANT_PREVIOUS_PAGE;
     public static int PREVIOUS_PAGE_SLOT;
     public static boolean WANT_CHANGE_ITEM;
-    public static boolean WANT_EMPLTY_SLOTS_ITEM;
+    public static boolean WANT_EMPTY_SLOTS_ITEM;
 
     public static void initialize() {
 
@@ -38,7 +38,7 @@ public final class Settings {
         UI_TOTAL_PAGES = fileConfiguration.getInt("GUI.total-pages", 1);
 
         WANT_CHANGE_ITEM = fileConfiguration.getBoolean("GUI.items.change-item.enabled");
-        WANT_EMPLTY_SLOTS_ITEM = fileConfiguration.getBoolean("GUI.items.empty-slots.enabled");
+        WANT_EMPTY_SLOTS_ITEM = fileConfiguration.getBoolean("GUI.items.empty-slots.enabled");
 
         WANT_NEXT_PAGE = fileConfiguration.getBoolean("GUI.items.next-page.enabled");
         NEXT_PAGE_SLOT = fileConfiguration.getInt("GUI.items.next-page.slot");

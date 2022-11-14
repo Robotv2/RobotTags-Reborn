@@ -9,7 +9,7 @@ options:
     #Which tag should we use if the player has none ? ("default-tag.enabled" has to be true)
 
 storage:
-  #Default mode is YML, Mode Available: SQLlite, MySQL.
+  #Default mode is SQLlite, Mode Available: SQLlite, MySQL.
   mode: SQLlite
   mysql-credentials:
     host: your-host

@@ -16,6 +16,45 @@ public enum Messages {
     PLAYER_TAG_CHANGED("player-tag-changed"),
     PLAYER_CANT_ACCESS("player-can't-access");
 
+    public static class SendableMessage {
+
+        private String message;
+        private boolean colored;
+        private boolean prefix;
+
+        public SendableMessage(String message) {
+            this.message = message;
+        }
+
+        public SendableMessage colored(boolean colored) {
+            this.colored = colored;
+            return this;
+        }
+
+        public SendableMessage prefix(boolean prefix) {
+            this.prefix = prefix;
+            return this;
+        }
+
+        public SendableMessage replace(CharSequence target, CharSequence replacement) {
+            this.message = message.replace(target, replacement);
+            return this;
+        }
+
+        public void send(CommandSender sender) {
+
+            if(colored) {
+                this.message = ColorUtil.color(message);
+            }
+
+            if(this.prefix) {
+                sender.sendMessage(Messages.PREFIX.getColored() + this.message);
+            } else {
+                sender.sendMessage(this.message);
+            }
+        }
+    }
+
     private final String path;
     Messages(String path) {
         this.path = path;
@@ -23,6 +62,10 @@ public enum Messages {
 
     public static Config getMessageConfig() {
         return ConfigAPI.getConfig("messages");
+    }
+
+    public SendableMessage toSendableMessage() {
+        return new SendableMessage(getMessageConfig().get().getString(getPath()));
     }
 
     public String getPath() {

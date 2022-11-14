@@ -15,10 +15,11 @@ import fr.robotv2.robottags.listeners.TagInventoryListener;
 import fr.robotv2.robottags.player.TagPlayer;
 import fr.robotv2.robottags.tag.Tag;
 import fr.robotv2.robottags.tag.TagManager;
-import fr.robotv2.robottags.ui.CustomItems;
-import fr.robotv2.robottags.ui.ItemStock;
+import fr.robotv2.robottags.ui.CustomItem;
+import fr.robotv2.robottags.ui.SpecialItem;
 import fr.robotv2.robottags.ui.TagInventoryManager;
 import fr.robotv2.robottags.util.FileUtil;
+import fr.robotv2.robottags.util.FillAPI;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -28,6 +29,8 @@ import revxrsal.commands.bukkit.BukkitCommandHandler;
 
 import java.io.File;
 import java.sql.SQLException;
+import java.util.EnumSet;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public final class RobotTags extends JavaPlugin {
@@ -63,6 +66,7 @@ public final class RobotTags extends JavaPlugin {
             getLogger().warning("Couldn't connect to the database. Shutting down the plugin.");
             getLogger().warning(ChatColor.RED + e.getClass().getSimpleName() + ": " + e.getMessage());
             getServer().getPluginManager().disablePlugin(this);
+            return;
         }
 
         this.loadTags();
@@ -76,8 +80,8 @@ public final class RobotTags extends JavaPlugin {
         placeholderapi.register();
 
         Settings.initialize();
-        ItemStock.initialize();
-        CustomItems.initialize();
+        this.loadCustomItems();
+        this.loadSpecialItems();
 
         getLogger().info("The plugin has been loaded in " + (System.currentTimeMillis() - current) + "MS");
         getLogger().info("");
@@ -87,6 +91,7 @@ public final class RobotTags extends JavaPlugin {
     public void onDisable() {
         placeholderapi.unregister();
         TagPlayer.getTagPlayers().forEach(getDataManager()::saveTagPlayer);
+        dataManager.closeConnection();
         instance = null;
     }
 
@@ -99,8 +104,8 @@ public final class RobotTags extends JavaPlugin {
         this.loadTags();
 
         Settings.initialize();
-        ItemStock.initialize();
-        CustomItems.initialize();
+        this.loadCustomItems();
+        this.loadSpecialItems();
     }
 
     // <<- UPDATER ->>
@@ -175,10 +180,12 @@ public final class RobotTags extends JavaPlugin {
         }
 
         switch (mode) {
+
             case SQLLITE -> {
                 final File file = FileUtil.createFile(getDataFolder().getPath(), "database.db");
                 source = new JdbcConnectionSource("jdbc:sqlite:".concat(file.getPath()));
             }
+
             case MYSQL -> {
                 final String host = config.getString("storage.mysql-credentials.host");
                 final String port = config.getString("storage.mysql-credentials.port");
@@ -224,5 +231,34 @@ public final class RobotTags extends JavaPlugin {
         handler.registerValueResolver(Tag.class, context -> getTagManager().fromId(context.pop()));
         handler.getAutoCompleter().registerSuggestion("tags", getTagManager().getRegisteredTags().stream().map(Tag::getId).collect(Collectors.toList()));
         handler.register(new TagCommand(this));
+    }
+
+    private void loadCustomItems() {
+        EnumSet.allOf(SpecialItem.ItemStockType.class).forEach(type -> {
+            final ConfigurationSection section = Objects.requireNonNull(getConfiguration().get().getConfigurationSection("GUI.items." + type.getId()));
+            final SpecialItem specialItem = new SpecialItem(section);
+            SpecialItem.addSpecialItem(type, specialItem);
+        });
+        FillAPI.setEmpty(SpecialItem.getSpecialItem(SpecialItem.ItemStockType.EMPTY_SLOTS).getItemStack());
+    }
+
+    private void loadSpecialItems() {
+        CustomItem.clearItems();
+        final ConfigurationSection section = getConfiguration().get().getConfigurationSection("GUI.custom-items");
+
+        if(section == null) {
+            return;
+        }
+
+        for(String itemId : section.getKeys(false)) {
+            final ConfigurationSection itemSection = section.getConfigurationSection(itemId);
+
+            if(itemSection == null) {
+                continue;
+            }
+
+            final CustomItem customItem = new CustomItem(itemSection);
+            CustomItem.addCustomItem(customItem);
+        }
     }
 }

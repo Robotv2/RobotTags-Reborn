@@ -25,24 +25,31 @@ public class Config {
     }
 
     public void setup() {
-        if(this.database == null)
+
+        if(this.database == null) {
             database = new File(main.getDataFolder(), name + ".yml");
+        }
+
         if(!database.exists()) {
-            if(database.getParentFile().exists())
+            if(database.getParentFile().exists()) {
                 database.getParentFile().mkdir();
+            }
             main.saveResource(name + ".yml", false);
         }
     }
 
     public FileConfiguration get() {
-        if(databaseConfig == null)
+        if(databaseConfig == null) {
             reload();
+        }
         return databaseConfig;
     }
 
     public void save() {
-        if(database == null || databaseConfig == null)
+        if(database == null || databaseConfig == null) {
             return;
+        }
+
         try {
             get().save(database);
         } catch (IOException e) {
@@ -51,8 +58,9 @@ public class Config {
     }
 
     public void reload() {
-        if(this.database == null)
+        if(this.database == null) {
             database = new File(main.getDataFolder(), name + ".yml");
+        }
         this.databaseConfig = YamlConfiguration.loadConfiguration(database);
 
         InputStream defaultStream = main.getResource(name + ".yml");

@@ -18,7 +18,7 @@ public record TagInventoryManager(TagManager tagManager) {
     public Inventory getTagMenuInventory(Player player, int page) {
         final Inventory inventory = Bukkit.createInventory(new TagInventoryHolder(page), Settings.UI_TOTAL_SLOTS, ColorUtil.color(Settings.UI_TITLE));
 
-        if (Settings.WANT_EMPLTY_SLOTS_ITEM) {
+        if (Settings.WANT_EMPTY_SLOTS_ITEM) {
             FillAPI.setupEmptySlots(inventory);
         }
 
@@ -27,26 +27,29 @@ public record TagInventoryManager(TagManager tagManager) {
         }
 
         if (Settings.WANT_NEXT_PAGE && page != Settings.UI_TOTAL_PAGES) {
-            inventory.setItem(Settings.NEXT_PAGE_SLOT, ItemStock.getNextPageItem());
+            inventory.setItem(Settings.NEXT_PAGE_SLOT, SpecialItem.getSpecialItem(SpecialItem.ItemStockType.NEXT_PAGE).getItemStack());
         }
 
         if (Settings.WANT_PREVIOUS_PAGE && page != 1) {
-            inventory.setItem(Settings.PREVIOUS_PAGE_SLOT, ItemStock.getPreviousPageItem());
+            inventory.setItem(Settings.PREVIOUS_PAGE_SLOT, SpecialItem.getSpecialItem(SpecialItem.ItemStockType.PREVIOUS_PAGE).getItemStack());
         }
 
         for (Tag tag : tagManager.getRegisteredTags()) {
-            if (page != tag.getPage()) continue;
+
+            if (page != tag.getPage()) {
+                continue;
+            }
 
             if (!tagManager.hasAccess(player, tag) && Settings.WANT_CHANGE_ITEM) {
-                inventory.setItem(tag.getSlot(), ItemStock.getChangeItem(tag));
+                inventory.setItem(tag.getSlot(), SpecialItem.getChangeItem(tag));
             } else {
                 inventory.setItem(tag.getSlot(), tag.getGuiItem());
             }
         }
 
-        for(String id : CustomItems.getIds()) {
-            if(CustomItems.isEnabled(id)) {
-                inventory.setItem(CustomItems.getSlot(id), CustomItems.getItemFor(id, player));
+        for(CustomItem item : CustomItem.getItems()) {
+            if(item.isEnabled()) {
+                inventory.setItem(item.getSlot(), item.getStackFor(player));
             }
         }
 

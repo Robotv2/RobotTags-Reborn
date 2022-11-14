@@ -59,10 +59,12 @@ public final class TagCommand {
             plugin.getDataManager().saveTagPlayer(tagPlayer);
         }
 
-        final String message = Messages.ADMIN_SET_TAG.getColored()
+        Messages.ADMIN_SET_TAG.toSendableMessage()
+                .colored(true)
+                .prefix(true)
                 .replace("%player%", target.getName())
-                .replace("%new-tag%", tag.getId());
-        actor.reply(Messages.PREFIX + message);
+                .replace("%new-tag%", tag.getId())
+                .send(actor.getSender());
     }
 
     @Subcommand("clear")
@@ -91,7 +93,10 @@ public final class TagCommand {
         }
 
         final String playerName = target == null ? actor.getName() : target.getName() != null ? target.getName() : "UNKNOWN";
-        final String message = Messages.ADMIN_CLEAR_TAG.getColored().replace("%player%", playerName);
-        actor.reply(Messages.PREFIX + message);
+        Messages.ADMIN_CLEAR_TAG.toSendableMessage()
+                .colored(true)
+                .prefix(true)
+                .replace("%player%", playerName)
+                .send(actor.getSender());
     }
 }

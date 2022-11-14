@@ -27,7 +27,7 @@ public final class DataManager {
         TableUtils.createTableIfNotExists(source, TagPlayer.class);
     }
 
-    private void closeConnection() {
+    public void closeConnection() {
         this.source.closeQuietly();
     }
 

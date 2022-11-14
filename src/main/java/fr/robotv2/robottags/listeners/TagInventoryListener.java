@@ -4,8 +4,7 @@ import fr.robotv2.robottags.Messages;
 import fr.robotv2.robottags.RobotTags;
 import fr.robotv2.robottags.player.TagPlayer;
 import fr.robotv2.robottags.tag.Tag;
-import fr.robotv2.robottags.tag.TagManager;
-import fr.robotv2.robottags.ui.CustomItems;
+import fr.robotv2.robottags.ui.CustomItem;
 import fr.robotv2.robottags.ui.TagInventoryHolder;
 import fr.robotv2.robottags.util.ItemAPI;
 import org.bukkit.entity.Player;
@@ -54,8 +53,11 @@ public class TagInventoryListener implements Listener {
             TagPlayer.getTagPlayer(player).setTagId(tagID);
             player.closeInventory();
 
-            final String message = Messages.PLAYER_TAG_CHANGED.getColored().replace("%tag%", tag.getDisplay());
-            player.sendMessage(Messages.PREFIX + message);
+            Messages.PLAYER_TAG_CHANGED.toSendableMessage()
+                    .colored(true)
+                    .prefix(true)
+                    .replace("%tag%", tag.getDisplay())
+                    .send(player);
 
         } else if(ItemAPI.hasKey(current, "next-page", PersistentDataType.INTEGER)) {
             plugin.getTagInventoryManager().openForPlayer(player, page + 1);
@@ -65,10 +67,9 @@ public class TagInventoryListener implements Listener {
 
         else if(ItemAPI.hasKey(current, "custom-item", PersistentDataType.STRING)) {
             final String itemID = (String) ItemAPI.getKeyValue(current, "custom-item", PersistentDataType.STRING);
-            if(type == ClickType.LEFT) {
-                CustomItems.click(CustomItems.ClickTypeTag.LEFT, itemID, player);
-            } else if(type == ClickType.RIGHT) {
-                CustomItems.click(CustomItems.ClickTypeTag.RIGHT, itemID, player);
+            final CustomItem item = CustomItem.getCustomItem(itemID);
+            if(item != null) {
+                item.handleAction(type, player);
             }
         }
     }
