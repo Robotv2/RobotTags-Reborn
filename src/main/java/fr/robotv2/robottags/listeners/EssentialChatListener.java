@@ -12,7 +12,9 @@ public class EssentialChatListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onChat(AsyncPlayerChatEvent e) {
 
-        if(!Settings.SUPPORT_ESSENTIALSX_CHAT) return;
+        if(!Settings.SUPPORT_ESSENTIALSX_CHAT) {
+            return;
+        }
 
         String format = e.getFormat();
         format = format.replace("{TAG}", TagPlayer.getTagPlayer(e.getPlayer()).getTagDisplaySafe());

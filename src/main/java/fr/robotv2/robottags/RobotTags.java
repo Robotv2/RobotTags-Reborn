@@ -99,11 +99,9 @@ public final class RobotTags extends JavaPlugin {
         getTagConfig().reload();
         getConfiguration().reload();
         Messages.getMessageConfig().reload();
-
-        getTagManager().unregisterAll();
-        this.loadTags();
-
         Settings.initialize();
+
+        this.loadTags();
         this.loadCustomItems();
         this.loadSpecialItems();
     }
@@ -233,7 +231,7 @@ public final class RobotTags extends JavaPlugin {
         handler.register(new TagCommand(this));
     }
 
-    private void loadCustomItems() {
+    private void loadSpecialItems() {
         EnumSet.allOf(SpecialItem.ItemStockType.class).forEach(type -> {
             final ConfigurationSection section = Objects.requireNonNull(getConfiguration().get().getConfigurationSection("GUI.items." + type.getId()));
             final SpecialItem specialItem = new SpecialItem(section);
@@ -242,7 +240,7 @@ public final class RobotTags extends JavaPlugin {
         FillAPI.setEmpty(SpecialItem.getSpecialItem(SpecialItem.ItemStockType.EMPTY_SLOTS).getItemStack());
     }
 
-    private void loadSpecialItems() {
+    private void loadCustomItems() {
         CustomItem.clearItems();
         final ConfigurationSection section = getConfiguration().get().getConfigurationSection("GUI.custom-items");
 

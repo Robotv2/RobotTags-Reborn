@@ -28,8 +28,13 @@ tags:
   gradient-colored:
     display: "<GRADIENT:2C08BA>GRADIENT</GRADIENT:028A97>"
     use-hex-color: true
+
     need-permission: true
     permission: robottags.tag.gradient
+
+    placeholder-requirement:
+      player_level: 20
+
     #GUI-ONLY
     slot: 22
     page: 2

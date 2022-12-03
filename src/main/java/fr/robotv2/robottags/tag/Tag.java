@@ -2,6 +2,8 @@ package fr.robotv2.robottags.tag;
 
 import com.iridium.iridiumcolorapi.IridiumColorAPI;
 import fr.robotv2.robottags.RobotTags;
+import fr.robotv2.robottags.tag.condition.PlaceholderCondition;
+import fr.robotv2.robottags.tag.condition.TagCondition;
 import fr.robotv2.robottags.util.ColorUtil;
 import fr.robotv2.robottags.util.ItemAPI;
 import org.bukkit.Material;
@@ -11,6 +13,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -31,6 +35,8 @@ public final class Tag {
     private final int page;
     private final int slot;
 
+    private final List<TagCondition> conditions = new ArrayList<>();
+
     public Tag(final ConfigurationSection section) {
         this.section = section;
         this.id = section.getName();
@@ -44,6 +50,15 @@ public final class Tag {
 
         this.page = section.getInt("page", 1);
         this.slot = section.getInt("slot", 0);
+
+        final ConfigurationSection conditionSection = section.getConfigurationSection("placeholder-requirement");
+        if(conditionSection != null) {
+            for(String placeholder : conditionSection.getKeys(false)) {
+                final Object required = conditionSection.get(placeholder);
+                final PlaceholderCondition placeholderCondition = new PlaceholderCondition(placeholder, required);
+                this.conditions.add(placeholderCondition);
+            }
+        }
     }
 
     public String getId() {
@@ -64,6 +79,10 @@ public final class Tag {
 
     public String getPermission() {
         return permission;
+    }
+
+    public List<TagCondition> getConditions() {
+        return conditions;
     }
 
     public ItemStack getGuiItem() {

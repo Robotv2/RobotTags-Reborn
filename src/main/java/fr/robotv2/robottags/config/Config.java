@@ -39,13 +39,16 @@ public class Config {
     }
 
     public FileConfiguration get() {
+
         if(databaseConfig == null) {
             reload();
         }
+
         return databaseConfig;
     }
 
     public void save() {
+
         if(database == null || databaseConfig == null) {
             return;
         }
@@ -58,12 +61,14 @@ public class Config {
     }
 
     public void reload() {
+
         if(this.database == null) {
             database = new File(main.getDataFolder(), name + ".yml");
         }
-        this.databaseConfig = YamlConfiguration.loadConfiguration(database);
 
+        this.databaseConfig = YamlConfiguration.loadConfiguration(database);
         InputStream defaultStream = main.getResource(name + ".yml");
+
         if(defaultStream != null) {
             YamlConfiguration defaultConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(defaultStream));
             this.databaseConfig.setDefaults(defaultConfig);
