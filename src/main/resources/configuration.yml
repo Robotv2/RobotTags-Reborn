@@ -34,15 +34,13 @@ GUI:
       display: "&8"
       material: black_stained_glass_pane
       lore: [ ]
-    #This item will be placed at the slot of any tags the player don't has the permission to use.
+    #This item will be placed at the slot of any tags the player don't have the permission to use.
+    #You can use %tag%, %tag-id% placeholders in the name & lore.
     change-item:
-      enabled: true
-      display: "&cYou don't have the tag: %tag%"
-      material: obsidian
-      lore:
-        - "&f"
-        - "&cYou don't have access to the tag %tag-id%"
-        - "&f"
+      enabled: false
+      display: "&c&lACCESS REFUSED &8- %tag%"
+      material: head-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDE5MjZiZmE5Y2FmOGJjYTkwNjkyNzgwOTc4YjVjNzRkNzEzZTg2NWY1YmRkMzc5MjA5N2IxODc5OTk3ZTU1NyJ9fX0=
+      lore: [ ]
     next-page:
       enabled: true
       slot: 53
@@ -60,28 +58,26 @@ GUI:
   #Support placeholders from PlaceholderAPI in name and lore.
   custom-items:
     player_information:
-      enabled: false
+      enabled: true
       slot: 0
-      material: name_tag
+      material: head-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjcwNWZkOTRhMGM0MzE5MjdmYjRlNjM5YjBmY2ZiNDk3MTdlNDEyMjg1YTAyYjQzOWUwMTEyZGEyMmIyZTJlYyJ9fX0=
       name: "&7Your current tag: %robottags_player%"
       lore: []
-      right-click:
-        - "[CLOSE]"
-      left-click:
-        - "[CLOSE]"
+      right-click: [ ]
+      left-click: [ ]
     clear_tag:
-      enabled: false
+      enabled: true
       slot: 8
       material: head-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2VkMWFiYTczZjYzOWY0YmM0MmJkNDgxOTZjNzE1MTk3YmUyNzEyYzNiOTYyYzk3ZWJmOWU5ZWQ4ZWZhMDI1In19fQ==
       name: "&7Click here to remove your tag"
       lore: []
       right-click:
         - "[CONSOLE] robottags clear %player%"
-        - "[MESSAGE] %prefix% &7Your tag has been removed."
+        - "[MESSAGE]%prefix% &7Your tag has been removed."
         - "[CLOSE]"
       left-click:
         - "[CONSOLE] robottags clear %player%"
-        - "[MESSAGE] %prefix% &7Your tag has been removed."
+        - "[MESSAGE]%prefix% &7Your tag has been removed."
         - "[CLOSE]"
     close-gui:
       enabled: true

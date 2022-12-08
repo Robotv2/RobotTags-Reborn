@@ -1,28 +1,35 @@
 package fr.robotv2.robottags.tag;
 
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnmodifiableView;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public final class TagManager {
 
-    private final Map<String, Tag> tags = new ConcurrentHashMap<>();
+    private final Map<String, Tag> tags = new HashMap<>();
 
     @UnmodifiableView
     public Collection<Tag> getRegisteredTags() {
         return Collections.unmodifiableCollection(tags.values());
     }
 
+    @Nullable
+    public Tag fromId(String id) {
+        return id != null ? tags.get(id.toLowerCase()) : null;
+    }
+
     public void registerTag(Tag tag) {
         tags.put(tag.getId().toLowerCase(), tag);
     }
 
-    public Tag fromId(String id) {
-        return tags.get(id.toLowerCase());
+    public void clearRegisteredTags() {
+        this.tags.clear();
     }
 
     public boolean exist(String id) {

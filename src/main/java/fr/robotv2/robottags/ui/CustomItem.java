@@ -1,5 +1,6 @@
 package fr.robotv2.robottags.ui;
 
+import fr.robotv2.robottags.Messages;
 import fr.robotv2.robottags.util.ColorUtil;
 import fr.robotv2.robottags.util.ItemAPI;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -14,11 +15,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnmodifiableView;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class CustomItem extends ItemStack {
@@ -113,7 +110,10 @@ public class CustomItem extends ItemStack {
         for(String command : commands) {
 
             final String prefix = command.split(" ")[0];
+
+            command = command.substring(prefix.length());
             command = command.replace("%player%", player.getName());
+            command = command.replace("%prefix%", Messages.PREFIX.getColored());
 
             switch (prefix) {
                 case "[CONSOLE]" -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);

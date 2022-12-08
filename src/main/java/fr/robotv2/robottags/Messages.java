@@ -78,6 +78,6 @@ public enum Messages {
     }
 
     public void send(CommandSender sender) {
-        sender.sendMessage(Messages.PREFIX + getColored());
+        sender.sendMessage(Messages.PREFIX.getColored() + getColored());
     }
 }

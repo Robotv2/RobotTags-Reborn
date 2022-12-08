@@ -6,12 +6,7 @@ import fr.robotv2.robottags.player.TagPlayer;
 import fr.robotv2.robottags.tag.Tag;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
-import revxrsal.commands.annotation.AutoComplete;
-import revxrsal.commands.annotation.Command;
-import revxrsal.commands.annotation.Default;
-import revxrsal.commands.annotation.Optional;
-import revxrsal.commands.annotation.Subcommand;
-import revxrsal.commands.annotation.Usage;
+import revxrsal.commands.annotation.*;
 import revxrsal.commands.bukkit.BukkitCommandActor;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 
@@ -32,7 +27,10 @@ public final class TagCommand {
     @CommandPermission("robottags.reload")
     public void onReload(BukkitCommandActor actor) {
         plugin.onReload();
-        Messages.PLUGIN_RELOADED.send(actor.getSender());
+        Messages.PLUGIN_RELOADED.toSendableMessage()
+                .prefix(true)
+                .colored(true)
+                .send(actor.getSender());
     }
 
     @Subcommand("set")
@@ -53,7 +51,7 @@ public final class TagCommand {
             return;
         }
 
-        tagPlayer.setTagId(tag.getId());
+        tagPlayer.setTagId(tag.getId(), false);
 
         if(!target.isOnline()) {
             plugin.getDataManager().saveTagPlayer(tagPlayer);
@@ -86,7 +84,7 @@ public final class TagCommand {
             return;
         }
 
-        tagPlayer.setTagId(null);
+        tagPlayer.setTagId(null, false);
 
         if(target != null && !target.isOnline()) {
             plugin.getDataManager().saveTagPlayer(tagPlayer);

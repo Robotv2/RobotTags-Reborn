@@ -1,45 +1,78 @@
 tags:
+
   default:
     display: "&c&lTAGS"
     use-hex-color: false
     need-permission: true
-    permission: my.permission
-    #Gui related
+    permission: robottags.tag.default
+    #GUI-ONLY
     page: 1
-    slot: 21
-    material: book
-    lore:
-      - "&8"
-      - "&7The first tag !"
-      - "&8"
-  hex-colored:
-    display: "<SOLID:89a2c9>COOL RGB TAG"
+    slot: 22
+    material: head-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2RjZGVlNmQwNmRmMjM0YjhlNjAzMzI4Yjk2YzU3ZjNhMzEyZTc5YWFiZmMzYmU3MmE4YjQyMTg3OGVkNjhjZiJ9fX0=
+    lore: [ ]
+
+  baron:
+    display: "<SOLID:89a2c9>&lBARON"
     use-hex-color: true
     need-permission: true
-    permission: robottags.tag.hexcolored
+    permission: robottags.tag.baron
+    #GUI-ONLY
+    slot: 30
+    page: 1
+    material: head-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2RjZGVlNmQwNmRmMjM0YjhlNjAzMzI4Yjk2YzU3ZjNhMzEyZTc5YWFiZmMzYmU3MmE4YjQyMTg3OGVkNjhjZiJ9fX0=
+    lore: [ ]
+
+  knight:
+    display: "<SOLID:60c7cc>&lKNIGHT"
+    use-hex-color: true
+    need-permission: true
+    permission: robottags.tag.knight
+    #GUI-ONLY
+    slot: 31
+    page: 1
+    material: head-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2RjZGVlNmQwNmRmMjM0YjhlNjAzMzI4Yjk2YzU3ZjNhMzEyZTc5YWFiZmMzYmU3MmE4YjQyMTg3OGVkNjhjZiJ9fX0=
+    lore: [ ]
+
+  duc:
+    display: "<SOLID:c6e85f>&lDUC"
+    use-hex-color: true
+    need-permission: true
+    permission: robottags.tag.duc
+    #GUI-ONLY
+    slot: 32
+    page: 1
+    material: head-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2RjZGVlNmQwNmRmMjM0YjhlNjAzMzI4Yjk2YzU3ZjNhMzEyZTc5YWFiZmMzYmU3MmE4YjQyMTg3OGVkNjhjZiJ9fX0=
+    lore: [ ]
+
+  prince:
+    display: "<GRADIENT:2C08BA>&lPRINCE</GRADIENT:028A97>"
+    use-hex-color: true
+    need-permission: true
+    permission: robottags.tag.prince
+    #GUI-ONLY
+    slot: 21
+    page: 2
+    material: head-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2RjZGVlNmQwNmRmMjM0YjhlNjAzMzI4Yjk2YzU3ZjNhMzEyZTc5YWFiZmMzYmU3MmE4YjQyMTg3OGVkNjhjZiJ9fX0=
+    lore: [ ]
+
+  king:
+    display: "<GRADIENT:ffffff>&lKING</GRADIENT:cde86b>"
+    use-hex-color: true
+    need-permission: true
+    permission: robottags.tag.king
     #GUI-ONLY
     slot: 23
-    page: 1
-    material: book
-    lore:
-      - "&8"
-      - "&7Wahou hex color !"
-      - "&8"
-  gradient-colored:
-    display: "<GRADIENT:2C08BA>GRADIENT</GRADIENT:028A97>"
-    use-hex-color: true
-
-    need-permission: true
-    permission: robottags.tag.gradient
-
-    placeholder-requirement:
-      player_level: 20
-
-    #GUI-ONLY
-    slot: 22
     page: 2
-    material: book
-    lore:
-      - "&8"
-      - "&7Wahou gradient tag !"
-      - "&8"
+    material: head-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2RjZGVlNmQwNmRmMjM0YjhlNjAzMzI4Yjk2YzU3ZjNhMzEyZTc5YWFiZmMzYmU3MmE4YjQyMTg3OGVkNjhjZiJ9fX0=
+    lore: [ ]
+
+  giant:
+    display: "<GRADIENT:4684db>&lGIANT</GRADIENT:3bd14c>"
+    use-hex-color: true
+    need-permission: true
+    permission: robottags.tag.giant
+    #GUI-ONLY
+    slot: 31
+    page: 2
+    material: head-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2RjZGVlNmQwNmRmMjM0YjhlNjAzMzI4Yjk2YzU3ZjNhMzEyZTc5YWFiZmMzYmU3MmE4YjQyMTg3OGVkNjhjZiJ9fX0=
+    lore: [ ]

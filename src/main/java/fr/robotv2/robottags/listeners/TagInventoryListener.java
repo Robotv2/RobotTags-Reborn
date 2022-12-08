@@ -50,7 +50,7 @@ public class TagInventoryListener implements Listener {
                 return;
             }
 
-            TagPlayer.getTagPlayer(player).setTagId(tagID);
+            TagPlayer.getTagPlayer(player).setTagId(tagID, true);
             player.closeInventory();
 
             Messages.PLAYER_TAG_CHANGED.toSendableMessage()

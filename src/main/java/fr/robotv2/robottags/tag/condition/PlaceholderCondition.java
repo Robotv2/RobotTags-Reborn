@@ -22,21 +22,23 @@ public record PlaceholderCondition(String placeholder, Object required) implemen
 
     @Override
     public boolean meetCondition(Player player, Tag tag) {
+
         final String formattedPlaceholder = PlaceholderAPI.setPlaceholders(player, "%" + placeholder + "%");
         final ValueType type = getValueType(formattedPlaceholder);
 
-        switch (type) {
-            case NUMBER -> {
-                double playerValue = Double.parseDouble(formattedPlaceholder);
-                double required = ((Number) this.required).doubleValue();
-                return playerValue >= required;
+        try {
+            switch (type) {
+                case NUMBER -> {
+                    double playerValue = Double.parseDouble(formattedPlaceholder);
+                    double required = ((Number) this.required).doubleValue();
+                    return playerValue >= required;
+                }
+                case STRING -> {
+                    String required = (String) this.required;
+                    return formattedPlaceholder.equalsIgnoreCase(required);
+                }
             }
-            case STRING -> {
-                String required = (String) this.required;
-                return formattedPlaceholder.equalsIgnoreCase(required);
-            }
-        }
-
+        } catch (ClassCastException ignored) {}
         return false;
     }
 }

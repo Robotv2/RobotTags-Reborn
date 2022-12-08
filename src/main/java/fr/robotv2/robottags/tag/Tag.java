@@ -31,7 +31,6 @@ public final class Tag {
     private final boolean needPermission;
     private final String permission;
 
-    private ItemStack guiItem;
     private final int page;
     private final int slot;
 
@@ -87,10 +86,6 @@ public final class Tag {
 
     public ItemStack getGuiItem() {
 
-        if(guiItem != null) {
-            return guiItem;
-        }
-
         final ItemStack result;
         final String material = section.getString("material", "STONE");
 
@@ -106,7 +101,6 @@ public final class Tag {
         meta.setLore(section.getStringList("lore").stream().map(ColorUtil::color).collect(Collectors.toList()));
         meta.getPersistentDataContainer().set(TAG_KEY, PersistentDataType.STRING, id);
         result.setItemMeta(meta);
-        this.guiItem = result;
 
         return result;
     }

@@ -1,5 +1,6 @@
 package fr.robotv2.robottags.ui;
 
+import fr.robotv2.robottags.RobotTags;
 import fr.robotv2.robottags.config.Settings;
 import fr.robotv2.robottags.tag.Tag;
 import fr.robotv2.robottags.tag.TagManager;
@@ -8,11 +9,17 @@ import fr.robotv2.robottags.util.FillAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.concurrent.CompletableFuture;
 
 public record TagInventoryManager(TagManager tagManager) {
 
     public void openForPlayer(Player player, int page) {
-        player.openInventory(getTagMenuInventory(player, page));
+        CompletableFuture
+                .supplyAsync(() -> this.getTagMenuInventory(player, page))
+                .thenAccept(inventory -> Bukkit.getScheduler().runTask(RobotTags.get(), () -> player.openInventory(inventory)))
+                .join();
     }
 
     public Inventory getTagMenuInventory(Player player, int page) {
@@ -40,7 +47,7 @@ public record TagInventoryManager(TagManager tagManager) {
                 continue;
             }
 
-            if (!tagManager.hasAccess(player, tag) && Settings.WANT_CHANGE_ITEM) {
+            if (Settings.WANT_CHANGE_ITEM && !tagManager.hasAccess(player, tag)) {
                 inventory.setItem(tag.getSlot(), SpecialItem.getChangeItem(tag));
             } else {
                 inventory.setItem(tag.getSlot(), tag.getGuiItem());

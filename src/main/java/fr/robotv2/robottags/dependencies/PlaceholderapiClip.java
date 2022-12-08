@@ -37,8 +37,9 @@ public final class PlaceholderapiClip extends PlaceholderExpansion {
 
     public String onPlaceholderRequest(Player player, @NotNull String placeholder) {
 
-        if (player == null || !player.isOnline())
+        if (player == null || !player.isOnline()) {
             return "";
+        }
 
         final TagPlayer tagPlayer = TagPlayer.getTagPlayer(player);
 
@@ -52,8 +53,10 @@ public final class PlaceholderapiClip extends PlaceholderExpansion {
         }
 
         if(placeholder.startsWith("tag_")) {
+
             final TagManager tagManager = RobotTags.get().getTagManager();
             final String tadID = placeholder.substring("tag_".length());
+
             if(tagManager.exist(tadID)) {
                 return tagManager.fromId(tadID).getDisplay();
             }

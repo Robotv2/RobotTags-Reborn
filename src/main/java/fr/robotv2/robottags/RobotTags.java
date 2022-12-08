@@ -23,6 +23,7 @@ import fr.robotv2.robottags.util.FillAPI;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import revxrsal.commands.bukkit.BukkitCommandHandler;
@@ -203,6 +204,7 @@ public final class RobotTags extends JavaPlugin {
     }
 
     private void loadTags() {
+        this.getTagManager().clearRegisteredTags();
         final ConfigurationSection section = getTagConfig().get()
                 .getConfigurationSection("tags");
 
