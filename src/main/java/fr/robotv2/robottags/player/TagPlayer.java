@@ -83,9 +83,6 @@ public final class TagPlayer {
 
     @NotNull
     public String getTagIdSafe() {
-
-        NoteBlock
-
         return tagID != null ? getTagId() : "";
     }
 
