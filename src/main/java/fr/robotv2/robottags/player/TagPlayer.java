@@ -9,6 +9,9 @@ import fr.robotv2.robottags.tag.Tag;
 import fr.robotv2.robottags.tag.TagManager;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.block.Block;
+import org.bukkit.block.data.type.NoteBlock;
+import org.bukkit.block.data.type.Tripwire;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -80,6 +83,9 @@ public final class TagPlayer {
 
     @NotNull
     public String getTagIdSafe() {
+
+        NoteBlock
+
         return tagID != null ? getTagId() : "";
     }
 

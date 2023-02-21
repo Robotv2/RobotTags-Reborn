@@ -94,6 +94,10 @@ public class CustomItem extends ItemStack {
         return this.section.getInt("slot", 0);
     }
 
+    public int getPage() {
+        return this.section.getInt("page", -1);
+    }
+
     public boolean isEnabled() {
         return this.section.getBoolean("enabled");
     }

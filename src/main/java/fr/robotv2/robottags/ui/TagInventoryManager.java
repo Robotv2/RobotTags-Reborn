@@ -9,7 +9,6 @@ import fr.robotv2.robottags.util.FillAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -55,7 +54,7 @@ public record TagInventoryManager(TagManager tagManager) {
         }
 
         for(CustomItem item : CustomItem.getItems()) {
-            if(item.isEnabled()) {
+            if(item.isEnabled() && (item.getPage() == -1 || item.getPage() == page)) {
                 inventory.setItem(item.getSlot(), item.getStackFor(player));
             }
         }
