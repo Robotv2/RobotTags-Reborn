@@ -51,6 +51,7 @@ public final class Tag {
         this.slot = section.getInt("slot", 0);
 
         final ConfigurationSection conditionSection = section.getConfigurationSection("placeholder-requirement");
+
         if(conditionSection != null) {
             for(String placeholder : conditionSection.getKeys(false)) {
                 final Object required = conditionSection.get(placeholder);

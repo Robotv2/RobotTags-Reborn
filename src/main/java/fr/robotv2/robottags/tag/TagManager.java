@@ -8,7 +8,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 public final class TagManager {
 
@@ -17,6 +16,10 @@ public final class TagManager {
     @UnmodifiableView
     public Collection<Tag> getRegisteredTags() {
         return Collections.unmodifiableCollection(tags.values());
+    }
+
+    public void clearRegisteredTags() {
+        this.tags.clear();
     }
 
     @Nullable
@@ -28,15 +31,15 @@ public final class TagManager {
         tags.put(tag.getId().toLowerCase(), tag);
     }
 
-    public void clearRegisteredTags() {
-        this.tags.clear();
-    }
-
     public boolean exist(String id) {
         return tags.containsKey(id.toLowerCase());
     }
 
-    public boolean hasAccess(Player player, Tag tag) {
+    public boolean hasAccess(Player player, @Nullable Tag tag) {
+
+        if(tag == null) {
+            return false;
+        }
 
         if(!this.exist(tag.getId())) {
             return false;

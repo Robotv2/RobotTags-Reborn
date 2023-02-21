@@ -5,6 +5,7 @@ import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import fr.robotv2.robottags.player.TagPlayer;
+import org.bukkit.block.data.type.Stairs;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,7 +22,7 @@ public final class DataManager {
         MYSQL;
     }
 
-    protected void initialize(@NotNull ConnectionSource source) throws SQLException {
+    void initialize(@NotNull ConnectionSource source) throws SQLException {
         this.source = source;
         this.gamePlayerDao = DaoManager.createDao(source, TagPlayer.class);
         TableUtils.createTableIfNotExists(source, TagPlayer.class);
