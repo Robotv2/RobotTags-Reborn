@@ -17,6 +17,7 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -36,7 +37,7 @@ public class ItemAPI {
         ItemStack head = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta meta = (SkullMeta) head.getItemMeta();
 
-        meta.setOwningPlayer(Bukkit.getOfflinePlayer(playerUUID));
+        Objects.requireNonNull(meta).setOwningPlayer(Bukkit.getOfflinePlayer(playerUUID));
         head.setItemMeta(meta);
 
         heads.put(playerUUID.toString(), head);
