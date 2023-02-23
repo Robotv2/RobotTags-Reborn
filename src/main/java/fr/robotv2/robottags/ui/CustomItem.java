@@ -40,47 +40,35 @@ public class CustomItem extends ItemStack {
     }
 
     private final ConfigurationSection section;
-    private final ItemStack stack;
 
     public CustomItem(@NotNull ConfigurationSection section) {
         this.section = section;
+    }
+
+    public ItemStack getStackFor(Player player) {
 
         final String name = section.getString("name");
         final List<String> lore = section.getStringList("lore");
         final String material = section.getString("material", "STONE");
 
-        ItemAPI.ItemBuilder builder;
+        ItemStack result;
 
         if (material.startsWith("head-")) {
-            final ItemStack head = ItemAPI.createSkull(material.replace("head-", ""));
-            builder = ItemAPI.toBuilder(head);
+            result = ItemAPI.createSkull(material.substring("head-".length()));
+        } else if (material.equalsIgnoreCase("player-head")) {
+            result = ItemAPI.getHead(player.getUniqueId());
         } else {
-            builder = new ItemAPI.ItemBuilder().setType(Material.getMaterial(material.toUpperCase()));
+            Material mat = Material.matchMaterial(material);
+            result = new ItemStack(mat != null ? mat : Material.STONE);
         }
 
-        this.stack = builder
-                .setName(name)
-                .setLore(lore)
-                .setKey("custom-item", getId())
-                .addFlags(ItemFlag.HIDE_ATTRIBUTES)
-                .build();
-    }
+        final ItemAPI.ItemBuilder builder = ItemAPI.toBuilder(result);
+        builder.setName(this.sanitizeString(name, player));
 
-    public ItemStack getStackFor(Player player) {
-
-        final ItemMeta meta = this.stack.getItemMeta();
-        if(meta == null) {
-            return this.stack;
-        }
-
-        final ItemAPI.ItemBuilder builder = ItemAPI.toBuilder(this.stack);
-        builder.setName(this.sanitizeString(meta.getDisplayName(), player));
-
-        List<String> lore = meta.getLore();
-
-        if(lore != null && !lore.isEmpty()) {
-            lore = lore.stream().map(line -> sanitizeString(line, player)).collect(Collectors.toList());
-            builder.setLore(lore);
+        if(!lore.isEmpty()) {
+            builder.setLore(lore.stream()
+                            .map(line -> sanitizeString(line, player))
+                            .collect(Collectors.toList()));
         }
 
         return builder.build();

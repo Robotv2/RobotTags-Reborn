@@ -6,12 +6,14 @@ import fr.robotv2.robottags.tag.condition.PlaceholderCondition;
 import fr.robotv2.robottags.tag.condition.TagCondition;
 import fr.robotv2.robottags.util.ColorUtil;
 import fr.robotv2.robottags.util.ItemAPI;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,24 +87,30 @@ public final class Tag {
         return conditions;
     }
 
-    public ItemStack getGuiItem() {
+    public ItemStack getGuiItem(Player player) {
 
         final ItemStack result;
         final String material = section.getString("material", "STONE");
 
-        if(material.startsWith("head-")) {
+        if (material.startsWith("head-")) {
             result = ItemAPI.createSkull(material.substring("head-".length()));
+        } else if (material.equalsIgnoreCase("player-head")) {
+            result = ItemAPI.getHead(player.getUniqueId());
         } else {
-            final Material mat = Material.matchMaterial(material);
+            Material mat = Material.matchMaterial(material);
             result = new ItemStack(mat != null ? mat : Material.STONE);
         }
 
         final ItemMeta meta = Objects.requireNonNull(result.getItemMeta());
-        meta.setDisplayName(getDisplay());
-        meta.setLore(section.getStringList("lore").stream().map(ColorUtil::color).collect(Collectors.toList()));
-        meta.getPersistentDataContainer().set(TAG_KEY, PersistentDataType.STRING, id);
-        result.setItemMeta(meta);
 
+        meta.setDisplayName(getDisplay());
+        meta.setLore(section.getStringList("lore").stream()
+                .map(tag -> PlaceholderAPI.setPlaceholders(player, tag))
+                .map(ColorUtil::color)
+                .collect(Collectors.toList()));
+        meta.getPersistentDataContainer().set(TAG_KEY, PersistentDataType.STRING, id);
+
+        result.setItemMeta(meta);
         return result;
     }
 
