@@ -8,6 +8,7 @@ public final class Settings {
     // Options
     public static boolean DEBUG;
     public static boolean SUPPORT_ESSENTIALSX_CHAT;
+    public static boolean GLOWING_ITEM;
 
     public static boolean DEFAULT_TAG_ENABLED;
     public static String DEFAULT_TAG_ID;
@@ -30,6 +31,7 @@ public final class Settings {
 
         DEBUG = fileConfiguration.getBoolean("debug", false);
         SUPPORT_ESSENTIALSX_CHAT = fileConfiguration.getBoolean("options.support-essentialsx-chat", false);
+        GLOWING_ITEM = fileConfiguration.getBoolean("options.glowing-item-if-player-access", true);
         DEFAULT_TAG_ENABLED = fileConfiguration.getBoolean("options.default-tag.enabled", false);
         DEFAULT_TAG_ID = fileConfiguration.getString("options.default-tag.tag", "default");
 

@@ -1,5 +1,6 @@
 debug: false
 options:
+  glowing-item-if-player-access: true
   support-essentialsx-chat: false
   #With this enabled, you can add the "{TAG}" placeholder in the essentialsX Chat configuration and it will be replaced with the current tag of the player
   default-tag:

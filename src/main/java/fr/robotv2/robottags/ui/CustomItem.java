@@ -3,20 +3,19 @@ package fr.robotv2.robottags.ui;
 import fr.robotv2.robottags.Messages;
 import fr.robotv2.robottags.util.ColorUtil;
 import fr.robotv2.robottags.util.ItemAPI;
-import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnmodifiableView;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class CustomItem extends ItemStack {
 
@@ -46,32 +45,7 @@ public class CustomItem extends ItemStack {
     }
 
     public ItemStack getStackFor(Player player) {
-
-        final String name = section.getString("name");
-        final List<String> lore = section.getStringList("lore");
-        final String material = section.getString("material", "STONE");
-
-        ItemStack result;
-
-        if (material.startsWith("head-")) {
-            result = ItemAPI.createSkull(material.substring("head-".length()));
-        } else if (material.equalsIgnoreCase("player-head")) {
-            result = ItemAPI.getHead(player.getUniqueId());
-        } else {
-            Material mat = Material.matchMaterial(material);
-            result = new ItemStack(mat != null ? mat : Material.STONE);
-        }
-
-        final ItemAPI.ItemBuilder builder = ItemAPI.toBuilder(result);
-        builder.setName(this.sanitizeString(name, player));
-
-        if(!lore.isEmpty()) {
-            builder.setLore(lore.stream()
-                            .map(line -> sanitizeString(line, player))
-                            .collect(Collectors.toList()));
-        }
-
-        return builder.build();
+        return ItemAPI.fromSection(this.section, player).build();
     }
 
     public String getId() {
@@ -114,9 +88,5 @@ public class CustomItem extends ItemStack {
                 case "[MESSAGE]" -> player.sendMessage(ColorUtil.color(command));
             }
         }
-    }
-
-    private String sanitizeString(String text, Player player) {
-        return PlaceholderAPI.setPlaceholders(player, text);
     }
 }

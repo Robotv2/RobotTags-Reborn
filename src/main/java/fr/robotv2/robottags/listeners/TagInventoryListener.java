@@ -42,10 +42,10 @@ public class TagInventoryListener implements Listener {
 
         if(ItemAPI.hasKey(current, "tag", PersistentDataType.STRING)) {
 
-            String tagID = (String) ItemAPI.getKeyValue(current, "tag", PersistentDataType.STRING);
+            String tagID = ItemAPI.getKeyValue(current, "tag", PersistentDataType.STRING);
             Tag tag = plugin.getTagManager().fromId(tagID);
 
-            if(!plugin.getTagManager().hasAccess(player, tag)) {
+            if(tag == null || !tag.hasAccess(player)) {
                 Messages.PLAYER_CANT_ACCESS.send(player);
                 return;
             }
@@ -66,7 +66,7 @@ public class TagInventoryListener implements Listener {
         }
 
         else if(ItemAPI.hasKey(current, "custom-item", PersistentDataType.STRING)) {
-            final String itemID = (String) ItemAPI.getKeyValue(current, "custom-item", PersistentDataType.STRING);
+            final String itemID = ItemAPI.getKeyValue(current, "custom-item", PersistentDataType.STRING);
             final CustomItem item = CustomItem.getCustomItem(itemID);
             if(item != null) {
                 item.handleAction(type, player);

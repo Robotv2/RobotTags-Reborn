@@ -3,15 +3,19 @@ package fr.robotv2.robottags.util;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import fr.robotv2.robottags.RobotTags;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.persistence.PersistentDataType;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -44,6 +48,7 @@ public class ItemAPI {
     }
 
     public static ItemStack createSkull(String url) {
+
         if(heads.containsKey(url)) {
             return heads.get(url);
         }
@@ -62,6 +67,7 @@ public class ItemAPI {
         } catch (IllegalArgumentException|NoSuchFieldException|SecurityException | IllegalAccessException error) {
             error.printStackTrace();
         }
+
         head.setItemMeta(headMeta);
         heads.put(url, head);
         return head;
@@ -75,12 +81,43 @@ public class ItemAPI {
         return builder;
     }
 
-    public static boolean hasKey(ItemStack item, String keyStr, PersistentDataType type) {
+    public static ItemBuilder fromSection(ConfigurationSection section, @NotNull Player target) {
+
+        final ItemStack temp;
+
+        final String name = section.getString("name", "Unknown");
+        final List<String> lore = section.getStringList("lore");
+        final String material = section.getString("material", "STONE");
+
+        if (material.startsWith("head-")) {
+            temp = ItemAPI.createSkull(material.substring("head-".length()));
+        } else if (material.equalsIgnoreCase("player-head")) {
+            temp = ItemAPI.getHead(target.getUniqueId());
+        } else {
+            Material mat = Material.matchMaterial(material);
+            temp = new ItemStack(mat != null ? mat : Material.STONE);
+        }
+
+        final ItemAPI.ItemBuilder builder = ItemAPI.toBuilder(temp);
+        builder.setName(ItemAPI.sanitize(name, target));
+
+        if(!lore.isEmpty()) {
+            builder.setLore(lore.stream().map(line -> ItemAPI.sanitize(line, target)).toList());
+        }
+
+        return builder;
+    }
+
+    private static String sanitize(String text, Player target) {
+        return ColorUtil.color(PlaceholderAPI.setPlaceholders(target, text));
+    }
+
+    public static boolean hasKey(ItemStack item, String keyStr, PersistentDataType<?, ?> type) {
         NamespacedKey key = new NamespacedKey(RobotTags.get(), keyStr);
         return item.getItemMeta() != null && item.getItemMeta().getPersistentDataContainer().has(key, type);
     }
 
-    public static Object getKeyValue(ItemStack item, String keyStr, PersistentDataType type) {
+    public static <V> V getKeyValue(ItemStack item, String keyStr, PersistentDataType<?, V> type) {
         NamespacedKey key = new NamespacedKey(RobotTags.get(), keyStr);
         return item.getItemMeta().getPersistentDataContainer().get(key, type);
     }

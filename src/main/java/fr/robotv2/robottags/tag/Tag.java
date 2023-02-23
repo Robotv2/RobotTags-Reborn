@@ -2,23 +2,21 @@ package fr.robotv2.robottags.tag;
 
 import com.iridium.iridiumcolorapi.IridiumColorAPI;
 import fr.robotv2.robottags.RobotTags;
+import fr.robotv2.robottags.config.Settings;
 import fr.robotv2.robottags.tag.condition.PlaceholderCondition;
 import fr.robotv2.robottags.tag.condition.TagCondition;
 import fr.robotv2.robottags.util.ColorUtil;
 import fr.robotv2.robottags.util.ItemAPI;
-import me.clip.placeholderapi.PlaceholderAPI;
-import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public final class Tag {
 
@@ -89,29 +87,15 @@ public final class Tag {
 
     public ItemStack getGuiItem(Player player) {
 
-        final ItemStack result;
-        final String material = section.getString("material", "STONE");
+        final ItemAPI.ItemBuilder builder = ItemAPI.fromSection(this.section, player);
+        builder.setKey(TAG_KEY.getKey(), id);
 
-        if (material.startsWith("head-")) {
-            result = ItemAPI.createSkull(material.substring("head-".length()));
-        } else if (material.equalsIgnoreCase("player-head")) {
-            result = ItemAPI.getHead(player.getUniqueId());
-        } else {
-            Material mat = Material.matchMaterial(material);
-            result = new ItemStack(mat != null ? mat : Material.STONE);
+        if(Settings.GLOWING_ITEM && this.hasAccess(player)) {
+            builder.addEnchant(Enchantment.ARROW_FIRE, 1, true);
+            builder.addFlags(ItemFlag.HIDE_ENCHANTS);
         }
 
-        final ItemMeta meta = Objects.requireNonNull(result.getItemMeta());
-
-        meta.setDisplayName(getDisplay());
-        meta.setLore(section.getStringList("lore").stream()
-                .map(tag -> PlaceholderAPI.setPlaceholders(player, tag))
-                .map(ColorUtil::color)
-                .collect(Collectors.toList()));
-        meta.getPersistentDataContainer().set(TAG_KEY, PersistentDataType.STRING, id);
-
-        result.setItemMeta(meta);
-        return result;
+        return builder.build();
     }
 
     public int getPage() {
@@ -120,5 +104,19 @@ public final class Tag {
 
     public int getSlot() {
         return slot;
+    }
+
+    public boolean hasAccess(Player player) {
+
+        if(this.needPermission() && !player.hasPermission(this.getPermission())) {
+            return false;
+        }
+
+        if(this.getConditions().isEmpty()) {
+            return true;
+        }
+
+        return this.getConditions()
+                .stream().allMatch(condition -> condition.meetCondition(player, this));
     }
 }

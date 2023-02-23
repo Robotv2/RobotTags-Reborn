@@ -34,22 +34,4 @@ public final class TagManager {
     public boolean exist(String id) {
         return tags.containsKey(id.toLowerCase());
     }
-
-    public boolean hasAccess(Player player, @Nullable Tag tag) {
-
-        if(tag == null) {
-            return false;
-        }
-
-        if(!this.exist(tag.getId())) {
-            return false;
-        }
-
-        if(tag.needPermission() && !player.hasPermission(tag.getPermission())) {
-            return false;
-        }
-
-        return tag.getConditions().isEmpty()
-                || tag.getConditions().stream().allMatch(condition -> condition.meetCondition(player, tag));
-    }
 }

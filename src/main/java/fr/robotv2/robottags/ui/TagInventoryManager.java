@@ -46,7 +46,7 @@ public record TagInventoryManager(TagManager tagManager) {
                 continue;
             }
 
-            if (Settings.WANT_CHANGE_ITEM && !tagManager.hasAccess(player, tag)) {
+            if (Settings.WANT_CHANGE_ITEM && !tag.hasAccess(player)) {
                 inventory.setItem(tag.getSlot(), SpecialItem.getChangeItem(tag));
             } else {
                 inventory.setItem(tag.getSlot(), tag.getGuiItem(player));

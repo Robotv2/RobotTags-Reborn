@@ -9,9 +9,6 @@ import fr.robotv2.robottags.tag.Tag;
 import fr.robotv2.robottags.tag.TagManager;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.block.Block;
-import org.bukkit.block.data.type.NoteBlock;
-import org.bukkit.block.data.type.Tripwire;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -72,8 +69,16 @@ public final class TagPlayer {
 
     @Nullable
     public Tag getTag() {
-        return tagID != null && tagManager.exist(tagID) ? tagManager.fromId(tagID) :
-                Settings.DEFAULT_TAG_ENABLED && tagManager.exist(Settings.DEFAULT_TAG_ID) ? tagManager.fromId(Settings.DEFAULT_TAG_ID) : null;
+
+        if(tagID != null && tagManager.exist(tagID)) {
+            return tagManager.fromId(tagID);
+        }
+
+        if(Settings.DEFAULT_TAG_ENABLED && tagManager.exist(Settings.DEFAULT_TAG_ID)) {
+            return tagManager.fromId(Settings.DEFAULT_TAG_ID);
+        }
+
+        return null;
     }
 
     @NotNull
