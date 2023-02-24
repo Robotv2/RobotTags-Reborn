@@ -88,6 +88,7 @@ public final class Tag {
     public ItemStack getGuiItem(Player player) {
 
         final ItemAPI.ItemBuilder builder = ItemAPI.fromSection(this.section, player);
+        builder.setName(this.getDisplay());
         builder.setKey(TAG_KEY.getKey(), id);
 
         if(Settings.GLOWING_ITEM && this.hasAccess(player)) {
